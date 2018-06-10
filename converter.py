@@ -9,7 +9,7 @@ def key_to_short(x):
     """
     url = ''
     while x > 0:
-        url += int_to_char(x % 62)
+        url = int_to_char(x % 62) + url
         x = x // 62
     return url
 
@@ -17,7 +17,7 @@ def short_to_key(s):
     power = 0
     sum = 0
     for c in s[::-1]:
-        sum += char_to_int(c) * (62 ** power)
+        sum += char_to_int(c) * (62**power)
         power += 1
     return sum
 
