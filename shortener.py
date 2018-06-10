@@ -13,3 +13,7 @@ app.url_map.converters['regex'] = RegexConverter
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
+
+@app.route('/<regex("[abcABC0-9]{4,6}"):uid>-<slug>/')
+def example(uid, slug):
+    return "uid: %s, slug: %s" % (uid, slug)
