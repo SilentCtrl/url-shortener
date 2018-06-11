@@ -17,3 +17,7 @@ def hello_world():
 @app.route('/<regex("[abcABC0-9]{4,6}"):uid>-<slug>/')
 def example(uid, slug):
     return "uid: %s, slug: %s" % (uid, slug)
+
+@app.route('/s.<slug>/')
+def test_short(slug):
+    return slug
