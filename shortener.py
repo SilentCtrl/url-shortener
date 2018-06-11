@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, render_template
 from werkzeug.routing import BaseConverter
 
 app = Flask(__name__)
@@ -18,6 +18,10 @@ def hello_world():
 def example(uid, slug):
     return "uid: %s, slug: %s" % (uid, slug)
 
-@app.route('/s.<slug>/')
+@app.route('/s/')
+def shortener_render():
+    return render_template('/src/app/app.component.html')
+
+@app.route('/s/<slug>/')
 def test_short(slug):
     return slug
