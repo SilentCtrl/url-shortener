@@ -1,7 +1,7 @@
 from flask import Flask, url_for, render_template
 from werkzeug.routing import BaseConverter
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='')
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
