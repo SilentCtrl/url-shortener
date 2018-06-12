@@ -24,4 +24,7 @@ def shortener_render():
 
 @app.route('/s/<slug>/')
 def test_short(slug):
+    """ Looks up the slug in the shortener database. If it does not exist,
+       go to the root shortener. Otherwise, redirect.
+    """
     return slug
