@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template
+from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
 from . import converter
 
@@ -29,3 +29,7 @@ def test_short(slug):
        go to the root shortener. Otherwise, redirect.
     """
     return slug
+
+@app.route('/g/')
+def reroute_google():
+    return redirect("http://www.google.com")
