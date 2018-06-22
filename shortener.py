@@ -20,15 +20,12 @@ def example(uid, slug):
     return "uid: %s, slug: %s" % (uid, slug)
 
 @app.route('/s/')
-def shortener_render():
-    return render_template('/src/app/app.component.html')
-
-@app.route('/s/<slug>/')
-def test_short(slug):
-    """ Looks up the slug in the shortener database. If it does not exist,
-       go to the root shortener. Otherwise, redirect.
-    """
-    return slug
+@app.route('/s/<slug>')
+def shortener_render(slug=None):
+    if not slug:
+    	return render_template('/src/app/app.component.html')
+    #TODO: lookup the url here
+    return redirect("http://www.google.com")
 
 @app.route('/g/')
 def reroute_google():
