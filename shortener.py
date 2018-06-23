@@ -2,7 +2,7 @@ from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
 from . import converter
 
-app = Flask(__name__, template_folder='')
+app = Flask(__name__)
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
@@ -23,7 +23,7 @@ def example(uid, slug):
 @app.route('/s/<slug>')
 def shortener_render(slug=None):
     if not slug:
-    	return render_template('/src/app/app.component.html')
+    	return render_template('hello.html')
     #TODO: lookup the url here
     return redirect("http://www.google.com")
 
