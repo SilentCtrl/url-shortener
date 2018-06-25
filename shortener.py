@@ -1,6 +1,7 @@
 from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
 from . import converter
+from . import __init__
 
 app = Flask(__name__)
 
