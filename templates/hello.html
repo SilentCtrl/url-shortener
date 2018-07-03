@@ -4,4 +4,8 @@
   <h1>Hello {{ slug }}!</h1>
 {% else %}
   <h1>Hello, World!</h1>
+  <form name="enter url" action="shortener.py" method="get">
+  Shorten: <input type="text" name="url_to_shorten">
+  <input type="submit" value="Submit">
+  </form>
 {% endif %}
