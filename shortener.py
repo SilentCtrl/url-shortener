@@ -25,6 +25,9 @@ def example(uid, slug):
 def shortener_render(slug=None):
     if not slug:
     	return render_template('hello.html')
+    if 'shortener.py?url_to_shorten' in slug:
+        print('action not implemented')
+        return render_template('hello.html')
     #TODO: lookup the url here
     return redirect("http://www.google.com")
 
