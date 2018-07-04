@@ -1,5 +1,3 @@
-import MySQLdb
-
 digit_offset = 48
 upper_offset = 55
 lower_offset = 61
@@ -45,17 +43,3 @@ def char_to_int(c):
     elif 'a' <= c <= 'z':
         return ord(c) - lower_offset
     raise ValueError("%s is an invalid character" % c)
- 
-def insert_to_database(url):
-    """ Takes a URL to insert and returns
-        it's shortened URL.
-    """
-
-
-def lookup_in_database(url):
-    """ Takes a shortened URL and looks it
-        up in the database. Returns it's
-        actual URL if it is in the database.
-    """
-
-

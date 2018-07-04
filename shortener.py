@@ -2,6 +2,7 @@ from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
 from . import converter
 from . import __init__
+import MySQLdb
 
 app = Flask(__name__)
 
@@ -34,3 +35,20 @@ def shortener_render(slug=None):
 @app.route('/g/')
 def reroute_google():
     return redirect("http://www.google.com")
+
+
+############################################################
+#       DATABASE ACCESSING STUFF ###########################
+
+def insert_to_database(url):
+    """ Takes a URL to insert and returns
+        it's shortened URL.
+    """
+
+
+def lookup_in_database(url):
+    """ Takes a shortened URL and looks it
+        up in the database. Returns it's
+        actual URL if it is in the database.
+    """
+
