@@ -1,4 +1,5 @@
-from flask import Flask, url_for, render_template, redirect
+from flask import Flask, url_for, render_template, redirect, current_app, g
+from flask.cli import with_appcontext
 from werkzeug.routing import BaseConverter
 from . import converter
 from . import __init__
@@ -46,9 +47,39 @@ def insert_to_database(url):
     """
 
 
+
 def lookup_in_database(url):
     """ Takes a shortened URL and looks it
         up in the database. Returns it's
         actual URL if it is in the database.
     """
 
+############################################################
+#      DATABASE ABSTRACTION LAYER ##########################
+
+import click
+
+def get_db():
+    if 'db' not in g:
+        g.db = MySQLdb.connect(host='localhost',user='root',passwd='')
+    return g.db
+
+def close_db(e=None):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+def init_db():
+    db = get_db()
+    with current_app.open_resource('schema.sql') as f:
+        db.executescript(f.read().decode('utf8'))
+
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    init_db()
+    click.echo('Initialized the database.')
+
+def init_app(app):
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
