@@ -45,7 +45,7 @@ def insert_to_database(url):
     """ Takes a URL to insert and returns
         it's shortened URL.
     """
-
+    #ADD THE CURSOR SOMEWHERE
 
 
 def lookup_in_database(url):
