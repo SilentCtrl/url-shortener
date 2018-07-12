@@ -1,9 +1,8 @@
-from flask import Flask, url_for, render_template, redirect, current_app, g
-from flask.cli import with_appcontext
+from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
 from . import converter
 from . import __init__
-import MySQLdb
+from . import db
 
 app = Flask(__name__)
 
@@ -27,7 +26,7 @@ def example(uid, slug):
 def shortener_render(slug=None):
     if not slug:
     	return render_template('hello.html')
-    if 'shortener.py?url_to_shorten' in slug:
+    if 'shortener.py?url_to_shorten' == slug:
         print('action not implemented')
         return render_template('hello.html')
     #TODO: lookup the url here
@@ -42,44 +41,28 @@ def reroute_google():
 #       DATABASE ACCESSING STUFF ###########################
 
 def insert_to_database(url):
-    """ Takes a URL to insert and returns
+    """ Takes a URL and returns
         it's shortened URL.
     """
-    #ADD THE CURSOR SOMEWHERE
-
+    link = db.get_db()
+    cursor = link.cursor()
+    existquery = "SELECT * from link, id WHERE link = " + url
+    try: 
+        exists = cursor.execute(existquery)
+        if exists:
+            return exists[1]
+        insertquery = "INSERT INTO links(link) VALUES (" + url + ")"
+        try:
+            cursor.execute(insertquery)
+            exists = cursor.execute(existquery)
+            return exists[1]
+        except:
+            print("Error: unable to insert")
+    except:
+        print("Error: unable to fetch data")
 
 def lookup_in_database(url):
     """ Takes a shortened URL and looks it
         up in the database. Returns it's
         actual URL if it is in the database.
     """
-
-############################################################
-#      DATABASE ABSTRACTION LAYER ##########################
-
-import click
-
-def get_db():
-    if 'db' not in g:
-        g.db = MySQLdb.connect(host='localhost',user='root',passwd='')
-    return g.db
-
-def close_db(e=None):
-    db = g.pop('db', None)
-    if db is not None:
-        db.close()
-
-def init_db():
-    db = get_db()
-    with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    init_db()
-    click.echo('Initialized the database.')
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
