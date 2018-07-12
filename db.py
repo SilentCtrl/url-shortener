@@ -5,7 +5,7 @@ from flask.cli import with_appcontext
 
 def get_db():
     if 'db' not in g:
-        g.db = MySQLdb.connect(host='localhost',user='root',passwd='', 'URLs') #put table here
+        g.db = MySQLdb.connect(host='localhost',user='root',passwd='', 'URLs')
     return g.db
 
 def close_db(e=None):

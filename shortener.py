@@ -29,7 +29,9 @@ def shortener_render(slug=None):
     if 'shortener.py?url_to_shorten' == slug:
         print('action not implemented')
         return render_template('hello.html')
-    #TODO: lookup the url here
+    link = lookup_in_database(slug)
+    if link:
+        return redirect(link)
     return redirect("http://www.google.com")
 
 @app.route('/g/')
@@ -46,17 +48,21 @@ def insert_to_database(url):
     """
     link = db.get_db()
     cursor = link.cursor()
-    existquery = "SELECT * from link, id WHERE link = " + url
+    existquery = "SELECT * from links WHERE link = " + url
     try: 
-        exists = cursor.execute(existquery)
+        cursor.execute(existquery)
+        exists = cursor.fetchall()
         if exists:
-            return exists[1]
+            return exists[0][1]
         insertquery = "INSERT INTO links(link) VALUES (" + url + ")"
         try:
             cursor.execute(insertquery)
-            exists = cursor.execute(existquery)
-            return exists[1]
+            cursor.execute(existquery)
+            exists = cursor.fetchall()
+            link.commit()
+            return exists[1][1]
         except:
+            link.rollback()
             print("Error: unable to insert")
     except:
         print("Error: unable to fetch data")
@@ -65,4 +71,9 @@ def lookup_in_database(url):
     """ Takes a shortened URL and looks it
         up in the database. Returns it's
         actual URL if it is in the database.
+        Returns false otherwise.
     """
+
+
+
+
