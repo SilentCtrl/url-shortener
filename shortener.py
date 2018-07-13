@@ -73,6 +73,7 @@ def lookup_in_database(url):
         actual URL if it is in the database.
         Returns false otherwise.
     """
+    key = converter.short_to_key(url)
 
 
 
