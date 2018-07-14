@@ -26,9 +26,10 @@ def example(uid, slug):
 @app.route('/s/')
 @app.route('/s/<slug>')
 def shortener_render(slug=None):
+    print(slug)
     if not slug:
     	return render_template('hello.html')
-    if 'shortener.py?url_to_shorten' == slug:
+    if "shortener.py?url_to_shorten=" in slug and "shortener.py?url_to_shorten=" == slug[0:27]:
         print('action not implemented')
         return render_template('hello.html')
     link = lookup_in_database(slug)
