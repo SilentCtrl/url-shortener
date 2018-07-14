@@ -1,5 +1,7 @@
 from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
+import click
+from flask.cli import with_appcontext
 from . import converter
 from . import __init__
 from . import db
@@ -48,19 +50,19 @@ def insert_to_database(url):
     """
     link = db.get_db()
     cursor = link.cursor()
-    existquery = "SELECT * from links WHERE link = " + url
+    existquery = "SELECT id from links WHERE link = " + url
     try: 
         cursor.execute(existquery)
         exists = cursor.fetchall()
         if exists:
-            return exists[0][1]
+            return cursor.key_to_short(exists[0])
         insertquery = "INSERT INTO links(link) VALUES (" + url + ")"
         try:
             cursor.execute(insertquery)
             cursor.execute(existquery)
             exists = cursor.fetchall()
             link.commit()
-            return exists[1][1]
+            return cursor.key_to_short(exists[0])
         except:
             link.rollback()
             print("Error: unable to insert")
@@ -74,7 +76,22 @@ def lookup_in_database(url):
         Returns false otherwise.
     """
     key = converter.short_to_key(url)
+    link = db.get_db()
+    cursor = link.cursor()
+    existquery = "SELECT link from links WHERE id = " + str(key)
+    try:
+        cursor.execute(existquery)
+        exists = cursor.fetchall()
+        if exists:
+            return exists[0]
+        return False
+    except:
+        print("Error: unable to fetch data")
 
-
-
-
+###########################################################
+#       DATABASE INITIALIZATION STUFF #####################
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    db.init_db()
+    click.echo('Initialized the database.')
