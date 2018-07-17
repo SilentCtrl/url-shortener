@@ -5,6 +5,7 @@ from flask.cli import with_appcontext
 from . import converter
 from . import __init__
 from . import db
+import cgi
 
 app = Flask(__name__)
 
@@ -23,13 +24,13 @@ def hello_world():
 def example(uid, slug):
     return "uid: %s, slug: %s" % (uid, slug)
 
+form = cgi.FieldStorage()
 @app.route('/s/')
 @app.route('/s/<slug>')
 def shortener_render(slug=None):
-    print(slug)
     if not slug:
     	return render_template('hello.html')
-    if "shortener.py?url_to_shorten=" in slug and "shortener.py?url_to_shorten=" == slug[0:27]:
+    if "shortener.py" in str(slug):
         print('action not implemented')
         return render_template('hello.html')
     link = lookup_in_database(slug)
