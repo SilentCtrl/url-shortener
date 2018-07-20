@@ -6,6 +6,7 @@ from . import converter
 from . import __init__
 from . import db
 import cgi
+import validators
 
 app = Flask(__name__)
 
@@ -24,14 +25,16 @@ def hello_world():
 def example(uid, slug):
     return "uid: %s, slug: %s" % (uid, slug)
 
-form = cgi.FieldStorage()
 @app.route('/s/')
 @app.route('/s/<slug>')
 def shortener_render(slug=None):
     if not slug:
     	return render_template('hello.html')
     if "shortener.py" in str(slug):
-        print('action not implemented')
+        form = cgi.FieldStorage()
+        if "url_to_shorten" in form and validators.url(form["url_to_shorten"]):
+            link = insert_to_database(form["url_to_shorten"].value)
+            print(link)
         return render_template('hello.html')
     link = lookup_in_database(slug)
     if link:
