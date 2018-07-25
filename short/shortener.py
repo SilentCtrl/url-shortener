@@ -39,7 +39,7 @@ def shortener_render(slug=None):
     link = lookup_in_database(slug)
     if link:
         return redirect(link)
-    return redirect("http://www.google.com")
+    return render_template('hello.html')
 
 @app.route('/g/')
 def reroute_google():
