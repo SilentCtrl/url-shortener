@@ -3,7 +3,6 @@ from werkzeug.routing import BaseConverter
 import click
 from flask.cli import with_appcontext
 from . import converter
-from . import __init__
 from . import db
 import cgi
 import validators
@@ -92,11 +91,3 @@ def lookup_in_database(url):
         return False
     except:
         print("Error: unable to fetch data")
-
-###########################################################
-#       DATABASE INITIALIZATION STUFF #####################
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    db.init_db()
-    click.echo('Initialized the database.')
