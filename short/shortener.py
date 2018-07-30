@@ -2,8 +2,8 @@ from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
 import click
 from flask.cli import with_appcontext
-from . import converter
-from . import db
+import converter
+import db
 import cgi
 import validators
 

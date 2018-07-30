@@ -2,11 +2,12 @@ from flask import Flask, url_for, render_template, redirect
 from werkzeug.routing import BaseConverter
 import click
 from flask.cli import with_appcontext
-from . import converter
-from . import db
+import os
 import cgi
 import validators
-from shortener import lookup_in_database, insert_to_database
+import converter
+import db
+import shortener
 
 def create_app():
 
@@ -35,10 +36,10 @@ def create_app():
 	    if "shortener.py" in str(slug):
 	        form = cgi.FieldStorage()
 	        if "url_to_shorten" in form and validators.url(form["url_to_shorten"]):
-	            link = insert_to_database(form["url_to_shorten"].value)
+	            link = shortener.insert_to_database(form["url_to_shorten"].value)
 	            print(link)
 	        return render_template('hello.html')
-	    link = lookup_in_database(slug)
+	    link = shortener.lookup_in_database(slug)
 	    if link:
 	        return redirect(link)
 	    return render_template('hello.html')
@@ -46,8 +47,6 @@ def create_app():
 	@app.route('/g/')
 	def reroute_google():
 	    return redirect("http://www.google.com")
-    
 
-    from . import db
-    db.init_app(app)
-    return app
+	db.init_app(app)
+	return app
