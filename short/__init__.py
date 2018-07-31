@@ -37,11 +37,11 @@ def create_app():
 	        if "url_to_shorten" in form and validators.url(form["url_to_shorten"]):
 	            link = insert_to_database(form["url_to_shorten"].value)
 	            print(link)
-	        return render_template('hello.html')
+	        return render_template('hello.html') #have to print out the new short URL
 	    link = lookup_in_database(slug)
 	    if link:
 	        return redirect(link)
-	    return render_template('hello.html')
+	    return render_template('hello.html') #maybe print out an error message
 
 	@app.route('/g/')
 	def reroute_google():
