@@ -5,9 +5,8 @@ from flask.cli import with_appcontext
 import os
 import cgi
 import validators
-from .converter import Converter
-from .db import Db
-from .shortener import Shortener 
+from .db import init_app
+from .shortener import insert_to_database, lookup_in_database 
 
 def create_app():
 
@@ -36,10 +35,10 @@ def create_app():
 	    if "shortener.py" in str(slug):
 	        form = cgi.FieldStorage()
 	        if "url_to_shorten" in form and validators.url(form["url_to_shorten"]):
-	            link = shortener.insert_to_database(form["url_to_shorten"].value)
+	            link = insert_to_database(form["url_to_shorten"].value)
 	            print(link)
 	        return render_template('hello.html')
-	    link = shortener.lookup_in_database(slug)
+	    link = lookup_in_database(slug)
 	    if link:
 	        return redirect(link)
 	    return render_template('hello.html')
