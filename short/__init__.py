@@ -5,9 +5,9 @@ from flask.cli import with_appcontext
 import os
 import cgi
 import validators
-import converter
-import db
-import shortener
+from .converter import Converter
+from .db import Db
+from .shortener import Shortener 
 
 def create_app():
 
