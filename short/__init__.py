@@ -36,12 +36,12 @@ def create_app():
 	        form = cgi.FieldStorage()
 	        if "url_to_shorten" in form and validators.url(form["url_to_shorten"]):
 	            link = insert_to_database(form["url_to_shorten"].value)
-	            print(link)
-	        return str(link) #have to print out the new short URL
+	            return str(link)
+	        return "Error: you did not enter a valid URL"
 	    link = lookup_in_database(slug)
 	    if link:
 	        return redirect(link)
-	    return "Error: " + str(link) + " is not a shortened URL" #maybe print out an error message
+	    return "Error: " + str(slug) + " is not a shortened URL" #maybe print out an error message
 
 	@app.route('/g/')
 	def reroute_google():
