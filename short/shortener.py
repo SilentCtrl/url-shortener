@@ -69,9 +69,9 @@ def insert_to_database(url):
             return cursor.key_to_short(exists[0])
         except:
             link.rollback()
-            print("Error: unable to insert")
+            return "Error: unable to insert"
     except:
-        print("Error: unable to fetch data")
+        return "Error: unable to fetch data"
 
 def lookup_in_database(url):
     """ Takes a shortened URL and looks it
@@ -90,4 +90,4 @@ def lookup_in_database(url):
             return exists[0]
         return False
     except:
-        print("Error: unable to fetch data")
+        return "Error: unable to fetch data"

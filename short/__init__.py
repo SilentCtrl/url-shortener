@@ -39,7 +39,7 @@ def create_app():
 	            return str(link)
 	        return "Error: you did not enter a valid URL"
 	    link = lookup_in_database(slug)
-	    if link:
+	    if "Error:" not in link:
 	        return redirect(link)
 	    return "Error: " + str(slug) + " is not a shortened URL" #maybe print out an error message
 
