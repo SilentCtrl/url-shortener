@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, redirect
+from flask import Flask, url_for, render_template, redirect, request
 from werkzeug.routing import BaseConverter
 import click
 from flask.cli import with_appcontext
@@ -27,17 +27,26 @@ def create_app():
 	def example(uid, slug):
 	    return "uid: %s, slug: %s" % (uid, slug)
 
+	@app.route('/s/', methods=['POST'])
+	@app.route('/s/<slug>', methods=['POST'])
+	def my_form_post(slug=None):
+		text = request.form['url_to_shorten']
+		link = insert_into_database(text)
+		return link
+
 	@app.route('/s/')
 	@app.route('/s/<slug>')
 	def shortener_render(slug=None):
 	    if not slug:
 	    	return render_template('hello.html')
-	    if "shortener.py" in str(slug):
-	        form = cgi.FieldStorage()
-	        if "url_to_shorten" in form and validators.url(form["url_to_shorten"]):
-	            link = insert_to_database(form["url_to_shorten"].value)
-	            return str(link)
-	        return "Error: you did not enter a valid URL"
+	    # if "shortener.py" in str(slug):
+	    #     form = cgi.FieldStorage()
+	    #     #if "url_to_shorten" in form and validators.url(form["url_to_shorten"]):
+	    #     if "url_to_shorten" in form:
+	    #         link = insert_to_database(form["url_to_shorten"].value)
+	    #         return str(link)
+	    #     print(form)
+	    #     return "Error: you did not enter a valid URL"
 	    link = lookup_in_database(slug)
 	    if "Error:" not in link:
 	        return redirect(link)
