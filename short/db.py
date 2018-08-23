@@ -73,7 +73,7 @@ def lookup_in_database(url):
         cursor.execute(existquery)
         exists = cursor.fetchall()
         if exists:
-            return exists[0]
+            return exists[0][0]
         return False
     except:
         return "Error: unable to fetch data"

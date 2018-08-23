@@ -5,7 +5,7 @@
 {% else %}
   <h1>Hello, World!</h1>
   {{ slug }}
-  <form name='Enter URL' action="{{ url_for('template') }}" method='POST'>
+  <form name='Enter URL' method='POST'>
   Shorten: <input name="url_to_shorten">
   <input type="submit" value="Submit">
   </form>

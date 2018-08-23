@@ -27,20 +27,21 @@ def create_app():
 	def example(uid, slug):
 	    return "uid: %s, slug: %s" % (uid, slug)
 
-	@app.route('/s/')
+	@app.route('/s/', methods=['POST', 'GET'])
 	@app.route('/s/<slug>', methods=['POST', 'GET'])
 	def shortener_render(slug=None):
 		if request.method == 'POST':
 			text = request.form['url_to_shorten']
 			link = insert_to_database(text)
-			print(link)
 			return key_to_short(int(link))
 		if not slug:
 			return render_template('hello.html')
 		link = lookup_in_database(slug)
 		if link and "Error:" not in link:
+			if link.find("http://") != 0:
+				link = "http://" + link
 			return redirect(link)
-		return "Error: " + str(slug) + " is not a shortened URL" #maybe print out an error message
+		return "Error: " + str(slug) + " is not a shortened URL" #goal: add a redirect link back to the shortener
 
 	@app.route('/g/')
 	def reroute_google():
