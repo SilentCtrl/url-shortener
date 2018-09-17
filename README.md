@@ -1,6 +1,6 @@
 # WEBSITE
 
-This project was done via flask. It still requires a bit of cleanup, but the basic functionalities are still there.
+This project was done via flask. It still requires a bit of cleanup, but the basic functionalities are there.
 
 INSTALLATION REQUIREMENTS:
 
