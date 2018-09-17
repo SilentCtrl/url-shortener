@@ -1,27 +1,30 @@
-# Website
+# WEBSITE
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+This project was done via flask. It still requires a bit of cleanup, but the basic functionalities are still there.
 
-## Development server
+INSTALLATION REQUIREMENTS:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+You need to install MySQL- you need to install the correct compatible distribution with homebrew:
+```
+brew install mysql
+```
 
-## Code scaffolding
+Then you need to have the python package requirements installed. This is in requirements.txt
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+In order to deploy the application, you need to do that following:
+```
+mysql.server start
+export FLASK_APP=short
+flask run
+```
 
-## Build
+And don't forget to do the following to stop running the code:
+```
+mysql.server stop
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+You should then have this running on http://127.0.0.1:5000/
 
-## Running unit tests
+The shortener application is on http://127.0.0.1:5000/s/
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+In order to use a shortened url, type http://127.0.0.1:5000/s/<shortened_url>
